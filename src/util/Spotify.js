@@ -31,7 +31,7 @@ const Spotify = {
 		}
 	},
 
-	// Search
+	// Search for term on Spotify
 	search(term) {
 		accessToken = Spotify.getAccessToken();
 		console.log(accessToken);
@@ -53,6 +53,43 @@ const Spotify = {
 					album: track.album.name,
 					uri: track.uri,
 				}));
+			});
+	},
+
+	// Save playlist to Spotify
+	savePlaylist(name, trackUris) {
+		if (!name || !trackUris) {
+			return;
+		}
+
+		accessToken = Spotify.getAccessToken();
+		const headers = { Authorization: `Bearer ${accessToken}` };
+		let userID;
+
+		return fetch('https://api.spotify.com/v1/me', { headers: headers })
+			.then((response) => {
+				return response.json();
+			})
+			.then((jsonResponse) => {
+				console.log('Test', jsonResponse.id);
+				userID = jsonResponse.id;
+				return fetch(`https://api.spotify.com/v1/users/${userID}/playlists`, {
+					headers: headers,
+					method: 'POST',
+					body: JSON.stringify({ name: name }),
+				})
+					.then((response) => response.json())
+					.then((jsonResponse) => {
+						const playlistID = jsonResponse.id;
+						return fetch(
+							`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`,
+							{
+								headers: headers,
+								method: 'POST',
+								body: JSON.stringify({ uris: trackUris }),
+							}
+						);
+					});
 			});
 	},
 };

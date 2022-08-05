@@ -18,34 +18,15 @@ class App extends Component {
 		this.search = this.search.bind(this);
 		this.state = {
 			searchResults: [],
-			playlistName: 'Test Playlist',
-			playlistTracks: [
-				{
-					name: 'Name4',
-					artist: 'Artist4',
-					album: 'Album4',
-					id: 4,
-				},
-				{
-					name: 'Name5',
-					artist: 'Artist5',
-					album: 'Album5',
-					id: 5,
-				},
-				{
-					name: 'Name6',
-					artist: 'Artist6',
-					album: 'Album6',
-					id: 6,
-				},
-				{
-					name: 'Name7',
-					artist: 'Artist7',
-					album: 'Album7',
-					id: 7,
-				},
-			],
+			playlistName: 'New Playlist',
+			playlistTracks: [],
 		};
+	}
+
+	componentDidMount() {
+		window.addEventListener('load', () => {
+			Spotify.getAccessToken();
+		});
 	}
 
 	// Add track to playlist
@@ -78,6 +59,12 @@ class App extends Component {
 	// Save playlist
 	savePlaylist() {
 		const trackUris = this.state.playlistTracks.map((track) => track.uri);
+		Spotify.savePlaylist(this.state.playlistName, trackUris).then(() => {
+			this.setState({
+				playlistName: 'New Playlist',
+				playlistTracks: [],
+			});
+		});
 	}
 
 	// Searches for a term

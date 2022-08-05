@@ -18,7 +18,7 @@ skills learned to implement project
 
 ## Screenshots
 
-![Jammming Screenshot](../screenshots/jammming-screenshot.png)
+![Jammming Screenshot](./screenshots/jammming-screenshot.png)
 
 ## Roadmap
 

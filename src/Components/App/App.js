@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import Spotify from '../../util/Spotify';
+
 // Components
 import { SearchBar } from '../SearchBar/SearchBar';
 import { SearchResults } from '../SearchResults/SearchResults';
@@ -15,26 +17,7 @@ class App extends Component {
 		this.savePlaylist = this.savePlaylist.bind(this);
 		this.search = this.search.bind(this);
 		this.state = {
-			searchResults: [
-				{
-					name: 'Name1',
-					artist: 'Artist1',
-					album: 'Album1',
-					id: 1,
-				},
-				{
-					name: 'Name2',
-					artist: 'Artist2',
-					album: 'Album2',
-					id: 2,
-				},
-				{
-					name: 'Name3',
-					artist: 'Artist3',
-					album: 'Album3',
-					id: 3,
-				},
-			],
+			searchResults: [],
 			playlistName: 'Test Playlist',
 			playlistTracks: [
 				{
@@ -99,7 +82,9 @@ class App extends Component {
 
 	// Searches for a term
 	search(term) {
-		console.log(term);
+		Spotify.search(term).then((searchResults) => {
+			this.setState({ searchResults: searchResults });
+		});
 	}
 
 	render() {

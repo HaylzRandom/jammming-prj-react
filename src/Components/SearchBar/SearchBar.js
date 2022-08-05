@@ -6,6 +6,9 @@ export class SearchBar extends Component {
 		super(props);
 		this.search = this.search.bind(this);
 		this.handleTermChange = this.handleTermChange.bind(this);
+		this.state = {
+			term: '',
+		};
 	}
 
 	search() {
@@ -13,6 +16,7 @@ export class SearchBar extends Component {
 	}
 
 	handleTermChange(e) {
+		e.preventDefault();
 		let term = e.target.value;
 		this.setState({ term: term });
 	}
